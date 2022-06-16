@@ -22,57 +22,31 @@ namespace ContactsCosmosWebApp.Models.Concrete
 
     private async Task<List<Contact>> GetContacts(string sqlQuery)
     {
-      QueryDefinition queryDefinition = new QueryDefinition(sqlQuery);
-      FeedIterator<Contact> queryResultIterator = _container.GetItemQueryIterator<Contact>(queryDefinition);
-      List<Contact> contactsList = new List<Contact>();
-      while (queryResultIterator.HasMoreResults)
-      {
-        FeedResponse<Contact> currentResultSet = await queryResultIterator.ReadNextAsync();
-        foreach (var item in currentResultSet)
-        {
-          contactsList.Add(item);
-        }
-        return contactsList;
-      }
       return null;
     }
 
     public async Task<Contact> CreateAsync(Contact contact)
     {
-      contact.Id = Guid.NewGuid().ToString();
-      ItemResponse<Contact> contactResponse = await _container.CreateItemAsync<Contact>(contact);
-      if (contactResponse != null)
-      {
-        _logger.LogInformation($"--- CosmosContactRepository.CreateAsync, New Contact with the name '{contact.ContactName}' created successfully ---");
-        return contact;
-      }
       return null;
     }
 
     public async Task DeleteAsync(string id, string contactName, string phone)
     {
-      ItemResponse<Contact> contactResponse = await _container.DeleteItemAsync<Contact>(id, new PartitionKey(contactName));
       _logger.LogInformation($"--- CosmosContactRepository.DeleteAsync, Deleted '{contactName}'s' record successfully ---");
     }
     public async Task<Contact> FindContactAsync(string id)
     {
-      var sqlQuery = $"Select * from c where c.id='{id}'";
-      var contactsList = await GetContacts(sqlQuery);
-      return contactsList[0];
+      return null;
     }
 
     public async Task<List<Contact>> FindContactByPhoneAsync(string phone)
     {
-      var sqlQuery = $"Select * from c where c.phone='{phone}'";
-      var contactsList = await GetContacts(sqlQuery);
-      return contactsList;
+      return null;
     }
 
     public async Task<List<Contact>> FindContactByContactNamePhoneAsync(string contactName, string phone)
     {
-      var sqlQuery = $"Select * from c where c.contactName='{contactName}' and c.phone='{phone}'";
-      var contactsList = await GetContacts(sqlQuery);
-      return contactsList;
+      return null;
     }
 
     public async Task<List<Contact>> FindContactsByContactNameAsync(string contactName)
@@ -92,22 +66,7 @@ namespace ContactsCosmosWebApp.Models.Concrete
 
     public async Task<Contact> UpdateAsync(Contact contact)
     {
-      ItemResponse<Contact> contactResponse = await _container.ReadItemAsync<Contact>(contact.Id, new PartitionKey(contact.ContactName));
-      var contactResult = contactResponse.Resource;
 
-      contactResult.Id = contact.Id;
-      contactResult.ContactName = contact.ContactName;
-      contactResult.Phone = contact.Phone;
-      contactResult.ContactType = contact.ContactType;
-      contactResult.Email = contact.Email;
-
-      contactResponse = await _container.ReplaceItemAsync<Contact>(contactResult, contactResult.Id);
-
-      if (contactResponse.Resource != null)
-      {
-        _logger.LogInformation($"--- CosmosContactRepository.UpdateAsync, Updated '{contact.ContactName}'s' record successfully ---");
-        return contactResponse;
-      }
       return null;
     }
   }
