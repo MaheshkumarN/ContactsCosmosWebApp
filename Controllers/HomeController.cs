@@ -36,7 +36,10 @@ namespace ContactsCosmosWebApp.Controllers
           keyVaultList.Add(item.Id, secret.Value);
         }
       }
-      keyVaultList = new Dictionary<string, string>() { ["KeyVault"] = "Empty" };
+      else
+      {
+        keyVaultList = new Dictionary<string, string>() { ["KeyVault"] = "Empty" };
+      }
       return View(keyVaultList);
     }
 
