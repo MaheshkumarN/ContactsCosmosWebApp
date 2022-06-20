@@ -67,7 +67,7 @@ builder.Services.AddLogging(cfg =>
 var app = builder.Build();
 
 var appInsightsFlag = app.Services.GetService<Microsoft.ApplicationInsights.Extensibility.TelemetryConfiguration>();
-if (builder.Configuration["EnableAppInsightsDisableTelemetry"] == "false")
+if (builder.Configuration["EnableAppInsightsTelemetry"] == "true")
 {
   appInsightsFlag.DisableTelemetry = false;
 }
